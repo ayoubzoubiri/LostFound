@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->id();
+       $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->text('description');
+            $table->enum('type', ['lost', 'found']);
+            $table->string('location');
+            $table->date('date');
+            $table->string('image')->nullable();
+            $table->enum('status', ['active', 'resolved'])->default('active');
             $table->timestamps();
         });
     }
