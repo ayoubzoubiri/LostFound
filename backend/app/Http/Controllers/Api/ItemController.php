@@ -15,15 +15,11 @@ class ItemController extends Controller
     {
         $query = Item::with('user:id,name');
 
-        if ($request->type) {
-            $query->where('type', $request->type);
-        }
+        if ($request->type) { $query->where('type', $request->type);}
 
-        if ($request->location) {
-            $query->where('location', 'like', '%' . $request->location . '%');
-        }
+        if ($request->location) { $query->where('location', 'like', '%' . $request->location . '%');}
 
-        $items = $query->orderBy('created_at', 'desc')->paginate(10);
+        $items = $query->orderBy('created_at', 'desc');
 
         return response()->json($items); 
     }
@@ -51,9 +47,7 @@ class ItemController extends Controller
 
     public function update(UpdateItemRequest $request, Item $item)
     {
-        if ($item->user_id !== $request->user()->id) {
-            return response()->json(['message' => 'Not authorized'], 403);
-        }
+        if ($item->user_id !== $request->user()->id ) { return response()->json(['message' => 'Not authorized'], 403); }
 
         $data = $request->only(['title', 'description', 'type', 'location', 'date']);
 
@@ -69,7 +63,7 @@ class ItemController extends Controller
 
     public function destroy(Request $request, Item $item)
     {
-        if ($item->user_id !== $request->user()->id) {
+        if ($item->user_id !== $request->user()->id ) {
             return response()->json(['message' => 'Not authorized'], 403);
         }
 
@@ -81,9 +75,7 @@ class ItemController extends Controller
 
     public function myItems(Request $request)
     {
-        $items = $request->user()->items()
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $items = $request->user()->items()->orderBy('created_at', 'desc')->get();
 
         return response()->json($items);
     }

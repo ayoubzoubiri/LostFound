@@ -10,24 +10,17 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory;
 
-    // Fields that can be filled
     protected $fillable = ['name', 'email', 'password', 'role'];
 
-    // Fields hidden from JSON
     protected $hidden = ['password', 'remember_token'];
 
-    // Auto hash password
-    protected $casts = [
-        'password' => 'hashed',
-    ];
+    protected $casts = ['password' => 'hashed',];
 
-    // User has many items
     public function items()
     {
         return $this->hasMany(Item::class);
     }
 
-    // Check if user is admin
     public function isAdmin()
     {
         return $this->role === 'admin';
