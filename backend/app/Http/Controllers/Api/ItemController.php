@@ -19,9 +19,9 @@ class ItemController extends Controller
 
         if ($request->location) { $query->where('location', 'like', '%' . $request->location . '%');}
 
-        $items = $query->orderBy('created_at', 'desc');
+        $items = $query->orderBy('created_at', 'desc')->get();
 
-        return response()->json($items); 
+        return response()->json(['data' => $items]); 
     }
 
     public function store(StoreItemRequest $request)
